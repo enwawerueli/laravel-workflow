@@ -1,0 +1,29 @@
+{
+    "name": "emzd/laravel-workflow",
+    "autoload": {
+        "psr-4": {
+            "EmzD\\Workflow\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "eric",
+            "email": "eric@otbafrica.com"
+        }
+    ],
+    "require": {
+        "symfony/workflow": "^6.2",
+        "symfony/event-dispatcher": "^6.2",
+        "symfony/expression-language": "^6.2"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EmzD\\Workflow\\WorkflowServiceProvider"
+            ],
+            "aliases": {
+                "Workflow": "EmzD\\Workflow\\Facades\\Workflow"
+            }
+        }
+    }
+}
