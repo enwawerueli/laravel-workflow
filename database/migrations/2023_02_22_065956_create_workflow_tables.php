@@ -76,10 +76,10 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists($this->getPrefix() . 'place_transition');
+        Schema::dropIfExists($this->getPrefix() . 'workflow_events');
         Schema::dropIfExists(Transition::getTableName());
         Schema::dropIfExists(Place::getTableName());
-        Schema::dropIfExists(Workflow::getTableName());
-        Schema::dropIfExists($this->getPrefix() . 'workflow_events');
         Schema::dropIfExists(Event::getTableName());
+        Schema::dropIfExists(Workflow::getTableName());
     }
 };
