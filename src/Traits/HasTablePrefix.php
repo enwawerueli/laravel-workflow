@@ -14,7 +14,7 @@ trait HasTablePrefix {
 
     public function getTable()
     {
-        return $this->getPrefix() . ($this->table ?? Str::snake(Str::pluralStudly(class_basename($this))));
+        return $this->table ?? $this->getPrefix() . Str::snake(Str::pluralStudly(class_basename($this)));
     }
 
     public static function getTableName(): string
