@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EmzD\Workflow\Models;
 
+use EmzD\Workflow\WorkflowBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,11 +16,26 @@ use EmzD\Workflow\Traits\HasTablePrefix;
 class Workflow extends Model {
     use HasTablePrefix;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'type',
+        'supports',
+        'marking_property',
+        'active',
+        'metadata'
+    ];
 
     protected $casts = [
         'metadata' => 'array',
     ];
+
+    public static function booted()
+    {
+        parent::booted();
+        static::created(function ($model) {
+            $model->events()->sync(Event::all());
+        });
+    }
 
     public function places(): HasMany
     {
@@ -28,7 +44,7 @@ class Workflow extends Model {
 
     public function initialPlaces(): HasMany
     {
-        return $this->places()->whereIsInitial(true);
+        return $this->places()->whereInitial(true);
     }
 
     public function transitions(): HasMany
@@ -41,18 +57,15 @@ class Workflow extends Model {
         return $this->belongsToMany(Event::class, table: $this->getPrefix() . 'workflow_events');
     }
 
-    public function eventsToDispatch(): BelongsToMany
+    public function singleState(): bool
     {
-        return $this->events()->wherePivot('enabled', true);
+        return $this->type === 'state_machine';
     }
 
-    public static function booted()
+    public function validate(): void
     {
-        parent::booted();
-        static::created(function (Model $model) {
-            if ($this->events->isEmpty()) {
-                $this->events()->attach(Event::all());
-            }
-        });
+        $builder = new WorkflowBuilder();
+        $definition = $builder->buildDefinition($this);
+        $builder->validateDefinition($definition, $this->singleState(), $this->name);
     }
 }

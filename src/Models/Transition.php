@@ -15,7 +15,12 @@ use EmzD\Workflow\Traits\HasTablePrefix;
 class Transition extends Model {
     use HasTablePrefix;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'workflow_id',
+        'guard',
+        'metadata'
+    ];
 
     protected $casts = [
         'metadata' => 'array',
@@ -28,11 +33,11 @@ class Transition extends Model {
 
     public function from(): BelongsToMany
     {
-        return $this->belongsToMany(Place::class, table: $this->getPrefix() . 'place_transition', relatedPivotKey: 'from_id');
+        return $this->belongsToMany(Place::class, table: $this->getPrefix() . 'from_place_transition', relatedPivotKey: 'from_id');
     }
 
     public function to(): BelongsToMany
     {
-        return $this->belongsToMany(Place::class, table: $this->getPrefix() . 'place_transition', relatedPivotKey: 'to_id');
+        return $this->belongsToMany(Place::class, table: $this->getPrefix() . 'to_place_transition', relatedPivotKey: 'to_id');
     }
 }

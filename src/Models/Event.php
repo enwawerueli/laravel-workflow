@@ -13,5 +13,9 @@ use EmzD\Workflow\Traits\HasTablePrefix;
 class Event extends Model {
     use HasTablePrefix;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'scope',
+        'configurable'
+    ];
 }

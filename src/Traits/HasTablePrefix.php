@@ -19,6 +19,6 @@ trait HasTablePrefix {
 
     public static function getTableName(): string
     {
-        return (new static())->getTable();
+        return app(static::class)->getTable();
     }
 }

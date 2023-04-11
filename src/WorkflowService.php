@@ -48,7 +48,7 @@ class WorkflowService implements WorkflowServiceInterface {
             'places',
             'initialPlaces',
             'transitions' => ['from', 'to'],
-            'eventsToDispatch'
+            'events'
         ])
             ->whereSupports(get_class($subject))
             ->when($workflowName, function ($query, $workflowName) {

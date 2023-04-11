@@ -14,7 +14,12 @@ use EmzD\Workflow\Traits\HasTablePrefix;
 class Place extends Model {
     use HasTablePrefix;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'workflow_id',
+        'initial',
+        'metadata',
+    ];
 
     protected $casts = [
         'metadata' => 'array',
